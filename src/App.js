@@ -6,6 +6,8 @@ import Contact from "./components/contact";
 import Home from "./components/home";
 import { BrowserRouter, Route, Routes } from "react-router";
 import User from "./components/user";
+import Dashboard from "./components/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -21,7 +23,8 @@ function App() {
             path="/contact"
             element={<Contact email="example@example.com" />}
           />
-          <Route path="/user" element={<User />} />
+          <Route path="/user" element={<PrivateRoute><User /></PrivateRoute>} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </>

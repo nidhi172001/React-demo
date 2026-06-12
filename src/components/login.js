@@ -1,5 +1,7 @@
+import axios from "axios";
 import { Form, Formik } from "formik";
 import React from "react";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 const Login = () => {
@@ -9,13 +11,32 @@ const Login = () => {
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
+const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
         <Formik
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            console.log("Form Values:", values);
+
+try{
+ const response = await axios.post("https://jsonplaceholder.typicode.com/users",
+{
+  email: values.email,
+  password: values.password
+}
+ );
+console.log("Login Response:", response)
+console.log("Login Response Data:", response.data)
+localStorage.setItem("token", "123456789");
+navigate("/user");
+
+} catch (error) {
+  console.error("Login error:", error);
+}
+
           }}
           initialValues={{ email: "", password: "" }}
           validationSchema={LoginSchema}

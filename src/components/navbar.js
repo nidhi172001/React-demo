@@ -10,9 +10,9 @@ function Navbar() {
             <a href="/contact" className="text-gray-300 hover:text-white">Contact</a>
             <a href="/user" className="text-gray-300 hover:text-white">User</a>
             <a href="/login" className="text-gray-300 hover:text-white">Login</a>
+            <a href="/dashboard" className="text-gray-300 hover:text-white">Dashboard</a>
         </div>
     </div>
-
 </nav>
         </div>
     )
