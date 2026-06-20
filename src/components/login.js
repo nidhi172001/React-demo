@@ -3,15 +3,20 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
+// import { authReducer, initialState } from "./authReducer";
 
-const Login = () => {
+const Login = ({ dispatch }) => {
+  console.log(dispatch)
   const LoginSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
-const navigate = useNavigate();
+
+  const navigate = useNavigate();
+  // const [score, dispatch] = useReducer(authReducer, initialState);
+  // console.log(score);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -21,22 +26,24 @@ const navigate = useNavigate();
           onSubmit={async (values) => {
             console.log("Form Values:", values);
 
-try{
- const response = await axios.post("https://ex-5n9q.onrender.com/api/login",
-{
-  email: values.email,
-  password: values.password
-}
- );
-console.log("Login Response:", response)
-console.log("Login Response Data:", response.data)
-localStorage.setItem("token", "123456789");
-navigate("/user");
-
-} catch (error) {
-  console.error("Login error:", error);
-}
-
+            try {
+              const response = await axios.post(
+                "https://ex-5n9q.onrender.com/api/login",
+                {
+                  email: values.email,
+                  password: values.password,
+                },
+              );
+              console.log("Login Response:", response);
+              console.log("Login Response Data:", response.data);
+              localStorage.setItem("token", response.data.token);
+              dispatch({
+                type: "LOGIN",
+              });
+              navigate("/user");
+            } catch (error) {
+              console.error("Login error:", error);
+            }
           }}
           initialValues={{ email: "", password: "" }}
           validationSchema={LoginSchema}
